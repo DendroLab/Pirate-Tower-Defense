@@ -5,6 +5,7 @@ using UnityEngine;
 public class TowerPlacement : MonoBehaviour{
 
     private Tower _placedTower;
+    private Entity entity;
 
     // Fungsi yang terpanggil sekali ketika ada object Rigidbody yang menyentuh area collider
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -13,9 +14,17 @@ public class TowerPlacement : MonoBehaviour{
         }
 
         Tower tower = collision.GetComponent<Tower>();
-        if(tower != null) {
-            tower.SetPlacePosition(transform.position);
-            _placedTower = tower;
+        Tower price = new Tower();
+        Debug.Log("collider");
+        int turretPrice = price.getTurretPrice();
+        bool isBought = CoinDecrease(turretPrice);
+        if (isBought) {
+            if (tower != null) {
+                tower.SetPlacePosition(transform.position);
+                _placedTower = tower;
+            }
+        } else {
+            return;
         }
     }
 
@@ -29,9 +38,19 @@ public class TowerPlacement : MonoBehaviour{
         _placedTower = null;
     }
 
+    public bool CoinDecrease(int value) {
+        int _currCoin = entity.Coin;
+        if (_currCoin < value) return false;
+        else {
+            int coin = _currCoin - value;
+            entity.Coin = coin;
+            return true;
+        }
+    }
+
     // Start is called before the first frame update
     void Start(){
-        
+        entity = new Entity();
     }
 
     // Update is called once per frame

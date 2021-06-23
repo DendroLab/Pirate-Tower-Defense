@@ -36,6 +36,9 @@ public class LevelManager : MonoBehaviour{
     [SerializeField] private Text _livesInfo;
     [SerializeField] private Text _totalEnemyInfo;
 
+    [SerializeField] private Text _coinInfo;
+    [SerializeField] private int _coin = 100;
+
     private List<Tower> _spawnedTowers = new List<Tower>();
     private List<Enemy> _spawnedEnemies = new List<Enemy>();
     private List<Bullet> _spawnedBullets = new List<Bullet>();
@@ -43,6 +46,10 @@ public class LevelManager : MonoBehaviour{
     private float _runningSpawnDelay;
     private int _currentLives;
     private int _enemyCounter;
+    private int _currCoin;
+    private bool _enemyDead;
+
+    Entity entity;
 
 
     // Start is called before the first frame update
@@ -50,12 +57,15 @@ public class LevelManager : MonoBehaviour{
         SetCurrentLives(_maxLives);
         SetTotalEnemy(_totalEnemy);
 
+        entity = new Entity();
+        entity.Coin = _coin;
+
         InstantiateAllTowerUI();
     }
 
     // Update is called once per frame
     private void Update() {
-
+        SetTotalCoin();
         // Jika menekan tombol R, fungsi restart akan terpanggil
         if (Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -212,6 +222,11 @@ public class LevelManager : MonoBehaviour{
     public void SetTotalEnemy(int totalEnemy) {
         _enemyCounter = totalEnemy;
         _totalEnemyInfo.text = $"Total Enemy: {Mathf.Max(_enemyCounter, 0)}";
+    }
+
+    public void SetTotalCoin() {
+        _currCoin = entity.Coin;
+        _coinInfo.text = $"Coin: {_currCoin}";
     }
 
     public void SetGameOver(bool isWin) {

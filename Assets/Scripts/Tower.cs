@@ -14,12 +14,17 @@ public class Tower : MonoBehaviour{
     [SerializeField] private float _shootDelay = 5f;
     [SerializeField] private float _bulletSpeed = 1f;
     [SerializeField] private float _bulletSplashRadius = 0f;
+    [SerializeField] private int _turretPrice = 50;
 
     [SerializeField] private Bullet _bulletPrefab;
+
+    private bool isBought = false;
 
     private float _runningShootDelay;
     private Enemy _targetEnemy;
     private Quaternion _targetRotation;
+
+    private LevelManager levelManager;
 
     // Digunakan untuk menyimpan posisi yang akan ditempati selama di drag
     public Vector2? PlacePosition { get; private set; }
@@ -116,15 +121,17 @@ public class Tower : MonoBehaviour{
         _towerHead.transform.rotation = Quaternion.RotateTowards(_towerHead.transform.rotation, _targetRotation, Time.deltaTime * 180f);
     }
 
+    public int getTurretPrice() {
+        return _turretPrice;
+    }
+
     // Start is called before the first frame update
     void Start(){
-        
+        levelManager = new LevelManager();
     }
 
     // Update is called once per frame
     void Update(){
         
     }
-
-
 }

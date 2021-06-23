@@ -9,10 +9,14 @@ public class Enemy : MonoBehaviour{
     [SerializeField] private SpriteRenderer _healthBar;
     [SerializeField] private SpriteRenderer _healthFill;
 
+    [SerializeField] private int _EnemyCoin = 20;
+
     private int _currentHealth;
 
     public Vector3 TargetPos { get; private set; }
     public int CurrentPathIndex { get; private set; }
+
+    private Entity entity;
 
     // Fungsi ini terpanggil sekali setiap kali menghidupkan game object yang memiliki script ini
     private void OnEnable() {
@@ -63,6 +67,8 @@ public class Enemy : MonoBehaviour{
             gameObject.SetActive(false);
 
             AudioPlayer.Instance.PlaySFX("enemy-die");
+
+            CoinIncrease(_EnemyCoin);
         }
 
         float healthPercentage = (float)_currentHealth / _maxHealth;
@@ -75,9 +81,14 @@ public class Enemy : MonoBehaviour{
         CurrentPathIndex = currIndex;
     }
 
+    public void CoinIncrease(int value) {
+        int _currCoin = entity.Coin;
+        entity.Coin = (_currCoin + value);
+    }
+
     // Start is called before the first frame update
     void Start(){
-        
+        entity = new Entity();
     }
 
     // Update is called once per frame
