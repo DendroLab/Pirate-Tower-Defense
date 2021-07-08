@@ -14,6 +14,7 @@ public class Tower : MonoBehaviour{
     [SerializeField] private float _shootDelay = 5f;
     [SerializeField] private float _bulletSpeed = 1f;
     [SerializeField] private float _bulletSplashRadius = 0f;
+    [SerializeField] private int _turretPrice = 50;
 
     [SerializeField] private Bullet _bulletPrefab;
 
@@ -114,6 +115,10 @@ public class Tower : MonoBehaviour{
 
         _targetRotation = Quaternion.Euler(new Vector3(0f, 0f, targetAngle - 90f));
         _towerHead.transform.rotation = Quaternion.RotateTowards(_towerHead.transform.rotation, _targetRotation, Time.deltaTime * 180f);
+    }
+
+    public int getTurretPrice() {
+        return _turretPrice;
     }
 
     // Start is called before the first frame update
