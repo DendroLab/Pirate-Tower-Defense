@@ -32,7 +32,8 @@ public class LevelManager : MonoBehaviour{
     [SerializeField] private int _maxLives = 3;
     [SerializeField] private int _totalEnemy = 15;
     [SerializeField] private GameObject _panel;
-    [SerializeField] private Text _statusInfo;
+    [SerializeField] private SpriteRenderer _youWin;
+    [SerializeField] private SpriteRenderer _youLose;
     [SerializeField] private Text _livesInfo;
     [SerializeField] private Text _totalEnemyInfo;
 
@@ -235,13 +236,17 @@ public class LevelManager : MonoBehaviour{
     public void SetGameOver(bool isWin) {
         IsOver = true;
 
-        _statusInfo.text = isWin ? "You Win!" : "You Lose!";
         _panel.gameObject.SetActive(true);
 
         if (!isWin) {
             _Next.gameObject.SetActive(false);
+            _youWin.gameObject.SetActive(false);
+            _youLose.gameObject.SetActive(true);
         } else {
-            if(SceneManager.GetActiveScene().name == "Level 3") {
+            _youWin.gameObject.SetActive(true);
+            _youLose.gameObject.SetActive(false);
+
+            if (SceneManager.GetActiveScene().name == "Level 3") {
                 _Next.gameObject.SetActive(false);
             }
         }
