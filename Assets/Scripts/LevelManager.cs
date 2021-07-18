@@ -234,6 +234,7 @@ public class LevelManager : MonoBehaviour{
         _coinInfo.text = $"Coin: {_currCoin}";
     }
 
+
     public void SetGameOver(bool isWin) {
         IsOver = true;
 
@@ -246,10 +247,27 @@ public class LevelManager : MonoBehaviour{
         } else {
             _youWin.gameObject.SetActive(true);
             _youLose.gameObject.SetActive(false);
+            UnlockLevel();
 
             if (SceneManager.GetActiveScene().name == "Level 3") {
                 _Next.gameObject.SetActive(false);
             }
+        }
+    }
+
+    private void UnlockLevel() {
+        int[] arrLevel = entity.Level;
+        int index = arrLevel.Length;
+        int heighestLevel = arrLevel[index-1];
+
+        string name = SceneManager.GetActiveScene().name;
+        int currLevel = int.Parse(name.Substring(6, 1));
+
+        if (heighestLevel < currLevel+1) {
+            int[] newArrLevel = Extension.Append(arrLevel, currLevel+1);
+            
+            entity.Level = newArrLevel;
+            //Debug.Log("Changed");
         }
     }
 }

@@ -15,7 +15,7 @@ public class TowerPlacement : MonoBehaviour{
 
         Tower tower = collision.GetComponent<Tower>();
         Tower price = new Tower();
-        Debug.Log("collider");
+        //Debug.Log("collider");
         int turretPrice = price.getTurretPrice();
         bool isBought = CoinDecrease(turretPrice);
         if (isBought) {
