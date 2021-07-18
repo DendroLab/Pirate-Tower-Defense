@@ -32,9 +32,16 @@ public class LevelManager : MonoBehaviour{
     [SerializeField] private int _maxLives = 3;
     [SerializeField] private int _totalEnemy = 15;
     [SerializeField] private GameObject _panel;
-    [SerializeField] private Text _statusInfo;
+    //[SerializeField] private Text _statusInfo;
     [SerializeField] private Text _livesInfo;
     [SerializeField] private Text _totalEnemyInfo;
+
+    [SerializeField] private Text _coinInfo;
+    [SerializeField] private int _coin = 100;
+    [SerializeField] private SpriteRenderer _youWin;
+    [SerializeField] private SpriteRenderer _youLose;
+
+    [SerializeField] private Button _Next;
 
     private List<Tower> _spawnedTowers = new List<Tower>();
     private List<Enemy> _spawnedEnemies = new List<Enemy>();
@@ -43,6 +50,9 @@ public class LevelManager : MonoBehaviour{
     private float _runningSpawnDelay;
     private int _currentLives;
     private int _enemyCounter;
+    private int _currCoin;
+
+    Entity entity;
 
 
     // Start is called before the first frame update
@@ -50,11 +60,16 @@ public class LevelManager : MonoBehaviour{
         SetCurrentLives(_maxLives);
         SetTotalEnemy(_totalEnemy);
 
+        entity = new Entity();
+        entity.Coin = _coin;
+
+
         InstantiateAllTowerUI();
     }
 
     // Update is called once per frame
     private void Update() {
+        SetTotalCoin();
 
         // Jika menekan tombol R, fungsi restart akan terpanggil
         if (Input.GetKeyDown(KeyCode.R)) {
@@ -214,10 +229,27 @@ public class LevelManager : MonoBehaviour{
         _totalEnemyInfo.text = $"Total Enemy: {Mathf.Max(_enemyCounter, 0)}";
     }
 
+    public void SetTotalCoin() {
+        _currCoin = entity.Coin;
+        _coinInfo.text = $"Coin: {_currCoin}";
+    }
+
     public void SetGameOver(bool isWin) {
         IsOver = true;
 
-        _statusInfo.text = isWin ? "You Win!" : "You Lose!";
         _panel.gameObject.SetActive(true);
+
+        if (!isWin) {
+            _Next.gameObject.SetActive(false);
+            _youWin.gameObject.SetActive(false);
+            _youLose.gameObject.SetActive(true);
+        } else {
+            _youWin.gameObject.SetActive(true);
+            _youLose.gameObject.SetActive(false);
+
+            if (SceneManager.GetActiveScene().name == "Level 3") {
+                _Next.gameObject.SetActive(false);
+            }
+        }
     }
 }

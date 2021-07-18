@@ -266,6 +266,7 @@ MonoBehaviour:
   _moveSpeed: 1
   _healthBar: {fileID: 6986919028641908815}
   _healthFill: {fileID: 4539852827283691201}
+  _EnemyCoin: 20
 --- !u!58 &-6602854626677543311
 CircleCollider2D:
   m_ObjectHideFlags: 0
