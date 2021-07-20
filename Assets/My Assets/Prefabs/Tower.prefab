@@ -182,11 +182,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _towerPlace: {fileID: 426188514155128148}
   _towerHead: {fileID: 8210298944154797511}
-  _shootPower: 1
-  _shootDistance: 5
+  _shootPower: 8
+  _shootDistance: 3
   _shootDelay: 5
   _bulletSpeed: 2
   _bulletSplashRadius: 0
+  _turretPrice: 50
   _bulletPrefab: {fileID: 8335898223355438869, guid: 0793f2deb0e141d48bd6a0dc2433ed56, type: 3}
 --- !u!61 &5612228975994121028
 BoxCollider2D:

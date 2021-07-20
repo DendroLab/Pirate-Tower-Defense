@@ -262,8 +262,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad7580f79710cab4a9536e4dc01eece5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 1
-  _moveSpeed: 1
+  _maxHealth: 5
+  _moveSpeed: 2
   _healthBar: {fileID: 6986919028641908815}
   _healthFill: {fileID: 4539852827283691201}
   _EnemyCoin: 20
