@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour{
+public class Bullet : MonoBehaviour {
 
     private int _bulletPower;
     private float _bulletSpeed;
     private float _bulletSplashRadius;
 
     private Enemy _targetEnemy;
+    private ParticleSystem particle;
 
     // FixedUpdate adalah update yang lebih konsisten jeda pemanggilannya
     // cocok digunakan jika karakter memiliki Physic (Rigidbody, dll)
@@ -40,16 +41,23 @@ public class Bullet : MonoBehaviour{
         }
 
         if (collision.gameObject.Equals(_targetEnemy.gameObject)) {
-            gameObject.SetActive(false);
 
             if (_bulletSplashRadius > 0f) {
                 // Bullet yang memiliki efek splash area
                 LevelManager.Instance.ExplodeAt(transform.position, _bulletSplashRadius, _bulletPower);
-            }else {
+            } else {
                 // Bullet yang hanya single-target
                 _targetEnemy.ReduceEnemyHealth(_bulletPower);
             }
 
+            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(0).gameObject.SetActive(true);
+            transform.GetChild(0).gameObject.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+
+            particle.Play();
+
+            StartCoroutine(ExampleCoroutine());
+            
             _targetEnemy = null;
         }
     }
@@ -64,9 +72,18 @@ public class Bullet : MonoBehaviour{
         _targetEnemy = enemy;
     }
 
-// Start is called before the first frame update
-void Start(){
-        
+    IEnumerator ExampleCoroutine() {
+        yield return new WaitForSeconds(1);
+        particle.Stop();
+        transform.GetChild(0).gameObject.SetActive(false);
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        gameObject.SetActive(false);
+    }
+
+    // Start is called before the first frame update
+    void Start(){
+        particle = GetComponentInChildren<ParticleSystem>();
+        transform.GetChild(0).gameObject.SetActive(false);
     }
 
     // Update is called once per frame

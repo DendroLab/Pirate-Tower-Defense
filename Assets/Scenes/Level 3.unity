@@ -8386,9 +8386,12 @@ MonoBehaviour:
   _towerUIParent: {fileID: 2063358563}
   _towerUIPrefab: {fileID: 970496532915390852, guid: 77153b246245f344583e918677273e1e, type: 3}
   _towerPrefabs:
-  - {fileID: 1694686258361804270, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+  - {fileID: 3880775793577296189, guid: 17f2280dad9fd024fad800e4b943ca6c, type: 3}
+  - {fileID: 5980876466073679838, guid: d0919c93a8890d54888ce52877089ce9, type: 3}
+  - {fileID: 6535052200531605220, guid: 70498a33c276d194ca83bcfd9da28b15, type: 3}
   _enemyPrefabs:
   - {fileID: 8465133305455653051, guid: 1e473a494dce6ab498a45e7b30813722, type: 3}
+  - {fileID: 368139496532671887, guid: 70fbb9042152f0d4f964138683a1e761, type: 3}
   _enemyPaths:
   - {fileID: 844351260}
   - {fileID: 1559512495}

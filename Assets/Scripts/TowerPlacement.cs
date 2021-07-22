@@ -13,18 +13,20 @@ public class TowerPlacement : MonoBehaviour{
             return;
         }
 
-        Tower tower = collision.GetComponent<Tower>();
-        Tower price = new Tower();
-        //Debug.Log("collider");
-        int turretPrice = price.getTurretPrice();
-        bool isBought = CoinDecrease(turretPrice);
-        if (isBought) {
-            if (tower != null) {
-                tower.SetPlacePosition(transform.position);
-                _placedTower = tower;
+        if(collision.tag == "Tower") {
+            Tower tower = collision.GetComponent<Tower>();
+            Tower price = new Tower();
+
+            int turretPrice = price.getTurretPrice();
+            bool isBought = CoinDecrease(turretPrice);
+            if (isBought) {
+                if (tower != null) {
+                    tower.SetPlacePosition(transform.position);
+                    _placedTower = tower;
+                }
+            } else {
+                return;
             }
-        } else {
-            return;
         }
     }
 

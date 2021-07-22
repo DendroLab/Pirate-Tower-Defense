@@ -22,6 +22,8 @@ public class Tower : MonoBehaviour{
     private Enemy _targetEnemy;
     private Quaternion _targetRotation;
 
+    private ParticleSystem particle;
+
     // Digunakan untuk menyimpan posisi yang akan ditempati selama di drag
     public Vector2? PlacePosition { get; private set; }
 
@@ -93,6 +95,11 @@ public class Tower : MonoBehaviour{
                 return;
             }
 
+            transform.GetChild(1).gameObject.SetActive(true);
+            particle.Play();
+
+            StartCoroutine(ExampleCoroutine());
+
             Bullet bullet = LevelManager.Instance.GetBulletFromPool(_bulletPrefab);
 
             bullet.transform.position = transform.position;
@@ -121,9 +128,16 @@ public class Tower : MonoBehaviour{
         return _turretPrice;
     }
 
+    IEnumerator ExampleCoroutine() {
+        yield return new WaitForSeconds(1);
+        particle.Stop();
+        transform.GetChild(1).gameObject.SetActive(false);
+    }
+
     // Start is called before the first frame update
     void Start(){
-        
+        particle = GetComponentInChildren<ParticleSystem>();
+        transform.GetChild(1).gameObject.SetActive(false);
     }
 
     // Update is called once per frame

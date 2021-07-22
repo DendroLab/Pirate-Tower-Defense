@@ -263,7 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 5
-  _moveSpeed: 2
+  _moveSpeed: 1
   _healthBar: {fileID: 6986919028641908815}
   _healthFill: {fileID: 4539852827283691201}
   _EnemyCoin: 20

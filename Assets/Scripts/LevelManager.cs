@@ -96,7 +96,8 @@ public class LevelManager : MonoBehaviour{
 
         foreach (Tower tower in _spawnedTowers) {
             tower.CheckNearestEnemy(_spawnedEnemies);
-            if(tower.gameObject.name != "Tower3") {
+            //Debug.Log(tower.gameObject.name);
+            if(tower.gameObject.name != "Tower3(Clone)") {
                 tower.SeekTarget();
             }
             tower.ShootTarget();

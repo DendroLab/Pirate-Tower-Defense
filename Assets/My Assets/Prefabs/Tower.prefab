@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 8490636640917073361}
   m_Layer: 0
   m_Name: Tower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -188,7 +188,7 @@ MonoBehaviour:
   _bulletSpeed: 2
   _bulletSplashRadius: 0
   _turretPrice: 50
-  _bulletPrefab: {fileID: 8335898223355438869, guid: 0793f2deb0e141d48bd6a0dc2433ed56, type: 3}
+  _bulletPrefab: {fileID: 7985332270166497274, guid: 92ccb28a0dfd60e42bc09f8304a81d42, type: 3}
 --- !u!61 &5612228975994121028
 BoxCollider2D:
   m_ObjectHideFlags: 0

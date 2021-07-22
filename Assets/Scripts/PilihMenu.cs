@@ -19,7 +19,7 @@ public class PilihMenu : MonoBehaviour{
             entity.Level = arrLevel;
         }
         int level = arrLevel[arrLevel.Length-1];
-        //Debug.Log(level);
+        Debug.Log(level);
 
         if (level > 0) {
             for (int i = 0; i < level; i++) {
