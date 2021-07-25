@@ -4,15 +4,19 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class LevelManager : MonoBehaviour{
+public class LevelManager : MonoBehaviour
+{
 
     public bool IsOver { get; private set; }
 
     // Fungsi Singleton
     private static LevelManager _instance = null;
-    public static LevelManager Instance {
-        get {
-            if(_instance == null) {
+    public static LevelManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
                 _instance = FindObjectOfType<LevelManager>();
             }
 
@@ -25,8 +29,7 @@ public class LevelManager : MonoBehaviour{
 
     [SerializeField] private Tower[] _towerPrefabs;
     [SerializeField] private Enemy[] _enemyPrefabs;
-
-    [SerializeField] private Transform[] _enemyPaths;
+    [SerializeField] private EnemyPath[] _enemyPaths;
     [SerializeField] private float _spawnDelay = 5f;
 
     [SerializeField] private int _maxLives = 3;
@@ -56,7 +59,8 @@ public class LevelManager : MonoBehaviour{
 
 
     // Start is called before the first frame update
-    void Start(){
+    void Start()
+    {
         SetCurrentLives(_maxLives);
         SetTotalEnemy(_totalEnemy);
 
@@ -68,19 +72,23 @@ public class LevelManager : MonoBehaviour{
     }
 
     // Update is called once per frame
-    private void Update() {
+    private void Update()
+    {
         SetTotalCoin();
 
         // Jika menekan tombol R, fungsi restart akan terpanggil
-        if (Input.GetKeyDown(KeyCode.R)) {
+        if (Input.GetKeyDown(KeyCode.R))
+        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
             Application.Quit();
         }
 
-        if (IsOver) {
+        if (IsOver)
+        {
             return;
         }
 
@@ -89,44 +97,58 @@ public class LevelManager : MonoBehaviour{
         // jadi bisa digunakan sebagai penghitung waktu
         _runningSpawnDelay -= Time.unscaledDeltaTime;
 
-        if (_runningSpawnDelay <= 0f) {
+        if (_runningSpawnDelay <= 0f)
+        {
             SpawnEnemy();
             _runningSpawnDelay = _spawnDelay;
         }
 
-        foreach (Tower tower in _spawnedTowers) {
+        foreach (Tower tower in _spawnedTowers)
+        {
             tower.CheckNearestEnemy(_spawnedEnemies);
             //Debug.Log(tower.gameObject.name);
-            if(tower.gameObject.name != "Tower3(Clone)") {
+            if (tower.gameObject.name != "Tower3(Clone)")
+            {
                 tower.SeekTarget();
             }
             tower.ShootTarget();
         }
 
-        foreach (Enemy enemy in _spawnedEnemies) {
-            if (!enemy.gameObject.activeSelf) {
+        foreach (Enemy enemy in _spawnedEnemies)
+        {
+            if (!enemy.gameObject.activeSelf)
+            {
                 continue;
             }
 
             // Kenapa nilainya 0.1? Karena untuk lebih mentoleransi perbedaan posisi,
             // akan terlalu sulit jika perbedaan posisinya harus 0 atau sama persis
-            if (Vector2.Distance(enemy.transform.position, enemy.TargetPos) < 0.1f) {
-                enemy.SetCurrentPathIndex(enemy.CurrentPathIndex + 1);
-                if (enemy.CurrentPathIndex < _enemyPaths.Length) {
-                    enemy.SetTargetPos(_enemyPaths[enemy.CurrentPathIndex].position);
-                } else {
+            if (Vector2.Distance(enemy.transform.position, enemy.TargetPos) < 0.1f)
+            {
+                enemy.SetCurrentPointInPath(enemy.CurrentPointInPath + 1);
+                Transform[] currentEnemyPath = _enemyPaths[enemy.ChoosenPathIndex].Points;
+                if (enemy.CurrentPointInPath < currentEnemyPath.Length)
+                {
+                    enemy.SetTargetPos(currentEnemyPath[enemy.CurrentPointInPath].position);
+                }
+                else
+                {
                     ReduceLives(1);
                     enemy.gameObject.SetActive(false);
                 }
-            } else {
+            }
+            else
+            {
                 enemy.MoveToTarget();
             }
         }
     }
 
     // Menampilkan seluruh tower yang tersedia pada UI Tower Selection
-    private void InstantiateAllTowerUI() {
-        foreach(Tower tower in _towerPrefabs) {
+    private void InstantiateAllTowerUI()
+    {
+        foreach (Tower tower in _towerPrefabs)
+        {
             GameObject newTowerUIObj = Instantiate(_towerUIPrefab.gameObject, _towerUIParent);
             TowerUI newTowerUI = newTowerUIObj.GetComponent<TowerUI>();
 
@@ -136,17 +158,21 @@ public class LevelManager : MonoBehaviour{
     }
 
     // Mendaftarkan Tower yang di-spawn agar bisa dikontrol oleh LevelManager
-    public void RegisterSpawnedTower(Tower tower) {
+    public void RegisterSpawnedTower(Tower tower)
+    {
         _spawnedTowers.Add(tower);
     }
 
-    private void SpawnEnemy() {
+    private void SpawnEnemy()
+    {
         SetTotalEnemy(--_enemyCounter);
 
-        if (_enemyCounter < 0) {
+        if (_enemyCounter < 0)
+        {
             bool isAllEnemyDestroyed = _spawnedEnemies.Find(e => e.gameObject.activeSelf) == null;
 
-            if (isAllEnemyDestroyed) {
+            if (isAllEnemyDestroyed)
+            {
                 SetGameOver(true);
             }
 
@@ -160,115 +186,142 @@ public class LevelManager : MonoBehaviour{
             e => !e.gameObject.activeSelf && e.name.Contains(enemyIndexString)
         )?.gameObject;
 
-        if (newEnemyObj == null) {
+        if (newEnemyObj == null)
+        {
             newEnemyObj = Instantiate(_enemyPrefabs[randomIndex].gameObject);
         }
 
         Enemy newEnemy = newEnemyObj.GetComponent<Enemy>();
-        if (!_spawnedEnemies.Contains(newEnemy)) {
+        if (!_spawnedEnemies.Contains(newEnemy))
+        {
             _spawnedEnemies.Add(newEnemy);
         }
 
-        newEnemy.transform.position = _enemyPaths[0].position;
-        newEnemy.SetTargetPos(_enemyPaths[1].position);
-        newEnemy.SetCurrentPathIndex(1);
+        newEnemy.ChoosenPathIndex = Random.Range(0, _enemyPaths.Length);
+        newEnemy.transform.position = _enemyPaths[newEnemy.ChoosenPathIndex].Points[0].position;
+        newEnemy.SetTargetPos(_enemyPaths[newEnemy.ChoosenPathIndex][1].position);
+        newEnemy.SetCurrentPointInPath(1);
         newEnemy.gameObject.SetActive(true);
     }
 
     // Untuk menampilkan garis penghubung dalam window Scene
     // tanpa harus di-Play terlebih dahulu
-    private void OnDrawGizmos() {
-        for (int i = 0; i < _enemyPaths.Length - 1; i++) {
-            Gizmos.color = Color.cyan;
-            Gizmos.DrawLine(_enemyPaths[i].position, _enemyPaths[i + 1].position);
-        }
+    private void OnDrawGizmos()
+    {
+        // foreach (EnemyPath path in _enemyPaths)
+        // {
+        //     for (int i = 0; i < path.Points.Length - 1; i++)
+        //     {
+        //         Gizmos.color = Color.cyan;
+        //         Gizmos.DrawLine(path.Points[i].position, path.Points[i + 1].position);
+        //     }
+        // }
     }
 
-    public Bullet GetBulletFromPool(Bullet prefab) {
+    public Bullet GetBulletFromPool(Bullet prefab)
+    {
         GameObject newBulletObj = _spawnedBullets.Find(
             b => !b.gameObject.activeSelf && b.name.Contains(prefab.name)
         )?.gameObject;
 
-        if (newBulletObj == null) {
+        if (newBulletObj == null)
+        {
             newBulletObj = Instantiate(prefab.gameObject);
         }
 
         Bullet newBullet = newBulletObj.GetComponent<Bullet>();
 
-        if (!_spawnedBullets.Contains(newBullet)) {
+        if (!_spawnedBullets.Contains(newBullet))
+        {
             _spawnedBullets.Add(newBullet);
         }
 
         return newBullet;
     }
 
-    public void ExplodeAt(Vector2 point, float radius, int damage) {
-        foreach (Enemy enemy in _spawnedEnemies) {
-            if (enemy.gameObject.activeSelf) {
-                if (Vector2.Distance(enemy.transform.position, point) <= radius) {
+    public void ExplodeAt(Vector2 point, float radius, int damage)
+    {
+        foreach (Enemy enemy in _spawnedEnemies)
+        {
+            if (enemy.gameObject.activeSelf)
+            {
+                if (Vector2.Distance(enemy.transform.position, point) <= radius)
+                {
                     enemy.ReduceEnemyHealth(damage);
                 }
             }
         }
     }
 
-    public void ReduceLives(int value) {
+    public void ReduceLives(int value)
+    {
         SetCurrentLives(_currentLives - value);
 
-        if (_currentLives <= 0) {
+        if (_currentLives <= 0)
+        {
             SetGameOver(false);
         }
     }
 
-    public void SetCurrentLives(int currentLives) {
+    public void SetCurrentLives(int currentLives)
+    {
         // Mathf.Max fungsi nya adalah mengambil angka terbesar
         // sehingga _currentLives di sini tidak akan lebih kecil dari 0
         _currentLives = Mathf.Max(currentLives, 0);
         _livesInfo.text = $"Lives: {_currentLives}";
     }
 
-    public void SetTotalEnemy(int totalEnemy) {
+    public void SetTotalEnemy(int totalEnemy)
+    {
         _enemyCounter = totalEnemy;
         _totalEnemyInfo.text = $"Total Enemy: {Mathf.Max(_enemyCounter, 0)}";
     }
 
-    public void SetTotalCoin() {
+    public void SetTotalCoin()
+    {
         _currCoin = entity.Coin;
         _coinInfo.text = $"Coin: {_currCoin}";
     }
 
 
-    public void SetGameOver(bool isWin) {
+    public void SetGameOver(bool isWin)
+    {
         IsOver = true;
 
         _panel.gameObject.SetActive(true);
 
-        if (!isWin) {
+        if (!isWin)
+        {
             _Next.gameObject.SetActive(false);
             _youWin.gameObject.SetActive(false);
             _youLose.gameObject.SetActive(true);
-        } else {
+        }
+        else
+        {
             _youWin.gameObject.SetActive(true);
             _youLose.gameObject.SetActive(false);
             UnlockLevel();
 
-            if (SceneManager.GetActiveScene().name == "Level 3") {
+            if (SceneManager.GetActiveScene().name == "Level 3")
+            {
                 _Next.gameObject.SetActive(false);
             }
         }
     }
 
-    private void UnlockLevel() {
+    private void UnlockLevel()
+    {
         int[] arrLevel = entity.Level;
         int index = arrLevel.Length;
-        int heighestLevel = arrLevel[index-1];
+        int heighestLevel = arrLevel[index - 1];
 
         string name = SceneManager.GetActiveScene().name;
         int currLevel = int.Parse(name.Substring(6, 1));
 
-        if (heighestLevel < currLevel+1) {
-            int[] newArrLevel = Extension.Append(arrLevel, currLevel+1);
-            
+        if (heighestLevel < currLevel + 1)
+        {
+            int[] newArrLevel = Extension.Append(arrLevel, currLevel + 1);
+
             entity.Level = newArrLevel;
             //Debug.Log("Changed");
         }

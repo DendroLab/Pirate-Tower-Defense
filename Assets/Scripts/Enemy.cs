@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour{
+public class Enemy : MonoBehaviour
+{
 
     [SerializeField] private int _maxHealth = 1;
     [SerializeField] private float _moveSpeed = 1f;
@@ -14,55 +15,65 @@ public class Enemy : MonoBehaviour{
     private int _currentHealth;
 
     public Vector3 TargetPos { get; private set; }
-    public int CurrentPathIndex { get; private set; }
+    public int ChoosenPathIndex { get; set; }
+    public int CurrentPointInPath { get; private set; }
 
     private Entity entity;
 
     // Fungsi ini terpanggil sekali setiap kali menghidupkan game object yang memiliki script ini
-    private void OnEnable() {
+    private void OnEnable()
+    {
         _currentHealth = _maxHealth;
         _healthFill.size = _healthBar.size;
     }
 
-    public void MoveToTarget() {
+    public void MoveToTarget()
+    {
         transform.position = Vector3.MoveTowards(transform.position, TargetPos, _moveSpeed * Time.deltaTime);
     }
 
-    public void SetTargetPos(Vector3 targetPos) {
+    public void SetTargetPos(Vector3 targetPos)
+    {
         TargetPos = targetPos;
         _healthBar.transform.parent = null;
 
         // Mengubah rotasi dari enemy
 
         Vector3 distance = TargetPos - transform.position;
-
-        if (Mathf.Abs(distance.y) > Mathf.Abs(distance.x)) {
-            if (distance.y > 0) {
-                // Menghadap atas
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
-            }else {
-                // Menghadap bawah
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, -90f));
-            }
-        } else {
-            if (distance.x > 0) {
+        // transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+        if (Mathf.Abs(distance.y) <= Mathf.Abs(distance.x))
+        {
+            //     if (distance.y > 0) {
+            //         // Menghadap atas
+            //         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 90f));
+            //     }else {
+            //         // Menghadap bawah
+            //         transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, -90f));
+            //     }
+            // } else {
+            if (distance.x > 0)
+            {
                 // Menghadap kanan (default)
                 transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
-            }else {
+            }
+            else
+            {
                 // Menghadap kiri
-                transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 180f));
+                transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
             }
         }
 
         _healthBar.transform.parent = transform;
     }
 
-    public void ReduceEnemyHealth(int damage) {
+    public void ReduceEnemyHealth(int damage)
+    {
         _currentHealth -= damage;
 
         AudioPlayer.Instance.PlaySFX("hit-enemy");
 
-        if (_currentHealth <= 0) {
+        if (_currentHealth <= 0)
+        {
             _currentHealth = 0;
             gameObject.SetActive(false);
 
@@ -77,22 +88,26 @@ public class Enemy : MonoBehaviour{
     }
 
     // Menandai Indeks terakhir pada path
-    public void SetCurrentPathIndex(int currIndex) {
-        CurrentPathIndex = currIndex;
+    public void SetCurrentPointInPath(int currIndex)
+    {
+        CurrentPointInPath = currIndex;
     }
 
-    public void CoinIncrease(int value) {
+    public void CoinIncrease(int value)
+    {
         int _currCoin = entity.Coin;
         entity.Coin = (_currCoin + value);
     }
 
     // Start is called before the first frame update
-    void Start(){
+    void Start()
+    {
         entity = new Entity();
     }
 
     // Update is called once per frame
-    void Update(){
-        
+    void Update()
+    {
+
     }
 }

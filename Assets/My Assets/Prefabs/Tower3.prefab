@@ -94,7 +94,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1694686258361804270, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: _turretPrice
-      value: 0
+      value: 70
       objectReference: {fileID: 0}
     - target: {fileID: 1694686258361804270, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: _bulletPrefab
@@ -115,6 +115,14 @@ PrefabInstance:
     - target: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: m_LocalPosition.x

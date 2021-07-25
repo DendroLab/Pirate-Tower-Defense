@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour{
+public class Tower : MonoBehaviour
+{
 
     // Tower Component
     [SerializeField] private SpriteRenderer _towerPlace;
@@ -27,16 +28,19 @@ public class Tower : MonoBehaviour{
     // Digunakan untuk menyimpan posisi yang akan ditempati selama di drag
     public Vector2? PlacePosition { get; private set; }
 
-    public void SetPlacePosition(Vector2? newPos) {
+    public void SetPlacePosition(Vector2? newPos)
+    {
         PlacePosition = newPos;
     }
 
-    public void LockPlacement() {
+    public void LockPlacement()
+    {
         transform.position = (Vector2)PlacePosition;
     }
 
     // Mengubah order in layer pada tower yang sedang di drag
-    public void ToggleOrderInLayer(bool toFront) {
+    public void ToggleOrderInLayer(bool toFront)
+    {
         int orderInLayer = toFront ? 2 : 0;
         _towerPlace.sortingOrder = orderInLayer;
         _towerHead.sortingOrder = orderInLayer;
@@ -44,18 +48,24 @@ public class Tower : MonoBehaviour{
 
 
     // Fungsi yang digunakan untuk mengambil sprite pada Tower Head
-    public Sprite GetTowerHeadIcon() {
+    public Sprite GetTowerHeadIcon()
+    {
         return _towerHead.sprite;
     }
 
     // Mengecek musuh terdekat
-    public void CheckNearestEnemy(List<Enemy> enemies) {
+    public void CheckNearestEnemy(List<Enemy> enemies)
+    {
 
-        if (_targetEnemy != null) {
-            if (!_targetEnemy.gameObject.activeSelf || 
-                Vector3.Distance(transform.position, _targetEnemy.transform.position) > _shootDistance) {
+        if (_targetEnemy != null)
+        {
+            if (!_targetEnemy.gameObject.activeSelf ||
+                Vector3.Distance(transform.position, _targetEnemy.transform.position) > _shootDistance)
+            {
                 _targetEnemy = null;
-            } else {
+            }
+            else
+            {
                 return;
             }
         }
@@ -64,14 +74,17 @@ public class Tower : MonoBehaviour{
 
         Enemy nearestEnemy = null;
 
-        foreach (Enemy enemy in enemies) {
+        foreach (Enemy enemy in enemies)
+        {
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
-            if (distance > _shootDistance) {
+            if (distance > _shootDistance)
+            {
                 continue;
             }
 
-            if (distance < nearestDistance) {
+            if (distance < nearestDistance)
+            {
                 nearestDistance = distance;
                 nearestEnemy = enemy;
             }
@@ -81,17 +94,21 @@ public class Tower : MonoBehaviour{
     }
 
     // Menembak musuh yang telah disimpan sebagai target
-    public void ShootTarget() {
-        if (_targetEnemy == null) {
+    public void ShootTarget()
+    {
+        if (_targetEnemy == null)
+        {
             return;
         }
 
         _runningShootDelay -= Time.unscaledDeltaTime;
 
-        if (_runningShootDelay <= 0f) {
+        if (_runningShootDelay <= 0f)
+        {
             bool headHasAimed = Mathf.Abs(_towerHead.transform.rotation.eulerAngles.z - _targetRotation.eulerAngles.z) < 10f;
 
-            if (!headHasAimed) {
+            if (!headHasAimed)
+            {
                 return;
             }
 
@@ -112,8 +129,10 @@ public class Tower : MonoBehaviour{
     }
 
     // Membuat tower selalu melihat ke arah musuh
-    public void SeekTarget() {
-        if (_targetEnemy == null) {
+    public void SeekTarget()
+    {
+        if (_targetEnemy == null)
+        {
             return;
         }
 
@@ -124,25 +143,29 @@ public class Tower : MonoBehaviour{
         _towerHead.transform.rotation = Quaternion.RotateTowards(_towerHead.transform.rotation, _targetRotation, Time.deltaTime * 180f);
     }
 
-    public int getTurretPrice() {
+    public int getTurretPrice()
+    {
         return _turretPrice;
     }
 
-    IEnumerator ExampleCoroutine() {
+    IEnumerator ExampleCoroutine()
+    {
         yield return new WaitForSeconds(1);
         particle.Stop();
         transform.GetChild(1).gameObject.SetActive(false);
     }
 
     // Start is called before the first frame update
-    void Start(){
+    void Start()
+    {
         particle = GetComponentInChildren<ParticleSystem>();
         transform.GetChild(1).gameObject.SetActive(false);
     }
 
     // Update is called once per frame
-    void Update(){
-        
+    void Update()
+    {
+
     }
 
 
