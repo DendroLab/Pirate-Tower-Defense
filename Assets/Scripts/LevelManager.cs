@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -52,20 +51,13 @@ public class LevelManager : MonoBehaviour
     private float _runningSpawnDelay;
     private int _currentLives;
     private int _enemyCounter;
-    private int _currCoin;
-
-    Entity entity;
-
 
     // Start is called before the first frame update
     void Start()
     {
         SetCurrentLives(_maxLives);
         SetTotalEnemy(_totalEnemy);
-
-        entity = new Entity();
-        entity.Coin = _coin;
-
+        GameResources.Coin = _coin;
 
         InstantiateAllTowerUI();
     }
@@ -125,8 +117,8 @@ public class LevelManager : MonoBehaviour
             if (Vector2.Distance(enemy.transform.position, enemy.TargetPos) < 0.1f)
             {
                 enemy.SetCurrentPointInPath(enemy.CurrentPointInPath + 1);
-                Transform[] currentEnemyPath = _enemyPaths[enemy.ChoosenPathIndex].Points;
-                if (enemy.CurrentPointInPath < currentEnemyPath.Length)
+                List<Transform> currentEnemyPath = _enemyPaths[enemy.ChoosenPathIndex].Points;
+                if (enemy.CurrentPointInPath < currentEnemyPath.Count)
                 {
                     enemy.SetTargetPos(currentEnemyPath[enemy.CurrentPointInPath].position);
                 }
@@ -203,20 +195,6 @@ public class LevelManager : MonoBehaviour
         newEnemy.gameObject.SetActive(true);
     }
 
-    // Untuk menampilkan garis penghubung dalam window Scene
-    // tanpa harus di-Play terlebih dahulu
-    private void OnDrawGizmos()
-    {
-        foreach (EnemyPath path in _enemyPaths)
-        {
-            for (int i = 0; i < path.Points.Length - 1; i++)
-            {
-                Gizmos.color = Color.cyan;
-                Gizmos.DrawLine(path.Points[i].position, path.Points[i + 1].position);
-            }
-        }
-    }
-
     public Bullet GetBulletFromPool(Bullet prefab)
     {
         GameObject newBulletObj = _spawnedBullets.Find(
@@ -278,8 +256,7 @@ public class LevelManager : MonoBehaviour
 
     public void SetTotalCoin()
     {
-        _currCoin = entity.Coin;
-        _coinInfo.text = $"Coin: {_currCoin}";
+        _coinInfo.text = $"Coin: {GameResources.Coin}";
     }
 
 
@@ -310,7 +287,7 @@ public class LevelManager : MonoBehaviour
 
     private void UnlockLevel()
     {
-        int[] arrLevel = entity.Level;
+        int[] arrLevel = GameResources.Level;
         int index = arrLevel.Length;
         int heighestLevel = arrLevel[index - 1];
 
@@ -321,7 +298,7 @@ public class LevelManager : MonoBehaviour
         {
             int[] newArrLevel = Extension.Append(arrLevel, currLevel + 1);
 
-            entity.Level = newArrLevel;
+            GameResources.Level = newArrLevel;
             //Debug.Log("Changed");
         }
     }

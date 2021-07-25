@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
@@ -17,8 +15,6 @@ public class Enemy : MonoBehaviour
     public Vector3 TargetPos { get; private set; }
     public int ChoosenPathIndex { get; set; }
     public int CurrentPointInPath { get; private set; }
-
-    private Entity entity;
 
     // Fungsi ini terpanggil sekali setiap kali menghidupkan game object yang memiliki script ini
     private void OnEnable()
@@ -95,19 +91,6 @@ public class Enemy : MonoBehaviour
 
     public void CoinIncrease(int value)
     {
-        int _currCoin = entity.Coin;
-        entity.Coin = (_currCoin + value);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        entity = new Entity();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        GameResources.Coin += value;
     }
 }

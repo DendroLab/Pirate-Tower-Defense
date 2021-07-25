@@ -1,5 +1,33 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!60 &1094002059196908858
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103778112187140572}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0, y: 1}
+      - {x: 0.64, y: -0.75}
+      - {x: -0.5877852, y: -0.75}
 --- !u!1001 &946821274460521102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -89,6 +117,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1694686258361804270, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+      propertyPath: _towerBase
+      value: 
+      objectReference: {fileID: 5251117195029083742}
+    - target: {fileID: 1694686258361804270, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: _bulletSpeed
       value: 15
       objectReference: {fileID: 0}
@@ -111,6 +143,14 @@ PrefabInstance:
     - target: {fileID: 5495841607189404374, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: m_TagString
       value: Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612228975994121028, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+      propertyPath: m_Size.x
+      value: 1.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612228975994121028, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+      propertyPath: m_Size.y
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
       propertyPath: m_RootOrder
@@ -188,10 +228,21 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -698412963896224032, guid: 09e7e68d5b082904da6872b3a8e61bf6, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1183195796097528134, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+--- !u!1 &103778112187140572 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5495841607189404374, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+  m_PrefabInstance: {fileID: 5563519449798415114}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1983591801420053536 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6247254978204987178, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
+  m_PrefabInstance: {fileID: 5563519449798415114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &5251117195029083742 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 426188514155128148, guid: 5e3ec0ce44f8476458602ca318330496, type: 3}
   m_PrefabInstance: {fileID: 5563519449798415114}
   m_PrefabAsset: {fileID: 0}

@@ -6,7 +6,7 @@ public class Tower : MonoBehaviour
 {
 
     // Tower Component
-    [SerializeField] private SpriteRenderer _towerPlace;
+    [SerializeField] private SpriteRenderer _towerBase;
     [SerializeField] private SpriteRenderer _towerHead;
 
     // Tower Properties
@@ -25,24 +25,36 @@ public class Tower : MonoBehaviour
 
     private ParticleSystem particle;
 
+    private TowerPlacement _towerPlace;
+
     // Digunakan untuk menyimpan posisi yang akan ditempati selama di drag
     public Vector2? PlacePosition { get; private set; }
+    internal bool isBought = false;
 
-    public void SetPlacePosition(Vector2? newPos)
+    public void SetTowerPlacement(TowerPlacement towerPlace)
     {
-        PlacePosition = newPos;
+        _towerPlace = towerPlace;
+        if (_towerPlace == null)
+        {
+            PlacePosition = null;
+        }
+        else
+        {
+            PlacePosition = _towerPlace.transform.position;
+        }
     }
 
     public void LockPlacement()
     {
         transform.position = (Vector2)PlacePosition;
+        _towerPlace.PlacedTower = this;
     }
 
     // Mengubah order in layer pada tower yang sedang di drag
     public void ToggleOrderInLayer(bool toFront)
     {
-        int orderInLayer = toFront ? 2 : 0;
-        _towerPlace.sortingOrder = orderInLayer;
+        int orderInLayer = toFront ? 99 : 1;
+        _towerBase.sortingOrder = orderInLayer - 1;
         _towerHead.sortingOrder = orderInLayer;
     }
 
@@ -71,11 +83,15 @@ public class Tower : MonoBehaviour
         }
 
         float nearestDistance = Mathf.Infinity;
-
         Enemy nearestEnemy = null;
 
         foreach (Enemy enemy in enemies)
         {
+            if (!enemy.gameObject.activeSelf)
+            {
+                continue;
+            }
+
             float distance = Vector3.Distance(transform.position, enemy.transform.position);
 
             if (distance > _shootDistance)
@@ -115,7 +131,7 @@ public class Tower : MonoBehaviour
             transform.GetChild(1).gameObject.SetActive(true);
             particle.Play();
 
-            StartCoroutine(ExampleCoroutine());
+            StartCoroutine(WaitToShootCoroutine());
 
             Bullet bullet = LevelManager.Instance.GetBulletFromPool(_bulletPrefab);
 
@@ -148,11 +164,42 @@ public class Tower : MonoBehaviour
         return _turretPrice;
     }
 
-    IEnumerator ExampleCoroutine()
+    IEnumerator WaitToShootCoroutine()
     {
         yield return new WaitForSeconds(1);
         particle.Stop();
         transform.GetChild(1).gameObject.SetActive(false);
+    }
+
+    private TowerPlacement _lastTriggeredTowerPlace;
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "TowerPlace")
+        {
+            _lastTriggeredTowerPlace = other.GetComponent<TowerPlacement>();
+            if (_lastTriggeredTowerPlace.PlacedTower == null)
+            {
+                if (_turretPrice <= GameResources.Coin)
+                {
+                    SetTowerPlacement(_lastTriggeredTowerPlace);
+                }
+            }
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (GameObject.ReferenceEquals(other.gameObject, _lastTriggeredTowerPlace.gameObject))
+        {
+            if (other.tag == "TowerPlace")
+            {
+                TowerPlacement towerPlacement = other.GetComponent<TowerPlacement>();
+                if (towerPlacement.PlacedTower == null)
+                {
+                    SetTowerPlacement(null);
+                }
+            }
+        }
     }
 
     // Start is called before the first frame update
@@ -161,12 +208,4 @@ public class Tower : MonoBehaviour
         particle = GetComponentInChildren<ParticleSystem>();
         transform.GetChild(1).gameObject.SetActive(false);
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-
 }

@@ -1,8 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour {
+public class Bullet : MonoBehaviour
+{
 
     private int _bulletPower;
     private float _bulletSpeed;
@@ -13,13 +13,17 @@ public class Bullet : MonoBehaviour {
 
     // FixedUpdate adalah update yang lebih konsisten jeda pemanggilannya
     // cocok digunakan jika karakter memiliki Physic (Rigidbody, dll)
-    private void FixedUpdate() {
-        if (LevelManager.Instance.IsOver) {
+    private void FixedUpdate()
+    {
+        if (LevelManager.Instance.IsOver)
+        {
             return;
         }
 
-        if (_targetEnemy != null) {
-            if (!_targetEnemy.gameObject.activeSelf) {
+        if (_targetEnemy != null)
+        {
+            if (!_targetEnemy.gameObject.activeSelf)
+            {
                 gameObject.SetActive(false);
                 _targetEnemy = null;
 
@@ -35,17 +39,23 @@ public class Bullet : MonoBehaviour {
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D collision) {
-        if (_targetEnemy == null) {
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (_targetEnemy == null)
+        {
             return;
         }
 
-        if (collision.gameObject.Equals(_targetEnemy.gameObject)) {
+        if (collision.gameObject.Equals(_targetEnemy.gameObject))
+        {
 
-            if (_bulletSplashRadius > 0f) {
+            if (_bulletSplashRadius > 0f)
+            {
                 // Bullet yang memiliki efek splash area
                 LevelManager.Instance.ExplodeAt(transform.position, _bulletSplashRadius, _bulletPower);
-            } else {
+            }
+            else
+            {
                 // Bullet yang hanya single-target
                 _targetEnemy.ReduceEnemyHealth(_bulletPower);
             }
@@ -57,22 +67,25 @@ public class Bullet : MonoBehaviour {
             particle.Play();
 
             StartCoroutine(ExampleCoroutine());
-            
+
             _targetEnemy = null;
         }
     }
 
-    public void SetProperties(int bulletPower, float bulletSpeed, float bulletSplashRadius) {
+    public void SetProperties(int bulletPower, float bulletSpeed, float bulletSplashRadius)
+    {
         _bulletPower = bulletPower;
         _bulletSpeed = bulletSpeed;
         _bulletSplashRadius = bulletSplashRadius;
     }
 
-    public void SetTargetEnemy(Enemy enemy) {
+    public void SetTargetEnemy(Enemy enemy)
+    {
         _targetEnemy = enemy;
     }
 
-    IEnumerator ExampleCoroutine() {
+    IEnumerator ExampleCoroutine()
+    {
         yield return new WaitForSeconds(1);
         particle.Stop();
         transform.GetChild(0).gameObject.SetActive(false);
@@ -81,13 +94,9 @@ public class Bullet : MonoBehaviour {
     }
 
     // Start is called before the first frame update
-    void Start(){
+    void Start()
+    {
         particle = GetComponentInChildren<ParticleSystem>();
         transform.GetChild(0).gameObject.SetActive(false);
-    }
-
-    // Update is called once per frame
-    void Update(){
-        
     }
 }

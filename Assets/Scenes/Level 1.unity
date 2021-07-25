@@ -243,7 +243,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &34886405
 GameObject:
@@ -20709,7 +20709,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &1146930704 stripped
 GameObject:
@@ -20770,13 +20770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126c480327b3ba244b7ff9203fba0cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Points:
-  - {fileID: 885378892}
-  - {fileID: 1218745251}
-  - {fileID: 708255682}
-  - {fileID: 141665102}
-  - {fileID: 393721080}
-  - {fileID: 2050557475}
 --- !u!1 &1158509437
 GameObject:
   m_ObjectHideFlags: 0
@@ -25787,7 +25780,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.28, y: 1.28}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!1 &1218745250
 GameObject:
@@ -33454,13 +33447,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126c480327b3ba244b7ff9203fba0cf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Points:
-  - {fileID: 844351260}
-  - {fileID: 1559512495}
-  - {fileID: 803663117}
-  - {fileID: 1612265614}
-  - {fileID: 260494419}
-  - {fileID: 655754322}
 --- !u!1 &1819531943
 GameObject:
   m_ObjectHideFlags: 0
