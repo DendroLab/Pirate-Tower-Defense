@@ -6,6 +6,7 @@ public class TowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
 {
 
     [SerializeField] private Image _towerIcon;
+    [SerializeField] private Text _towerPriceText;
 
     private Tower _towerPrefab;
     private Tower _currentSpawnedTower;
@@ -14,6 +15,7 @@ public class TowerUI : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
     {
         _towerPrefab = tower;
         _towerIcon.sprite = tower.GetTowerHeadIcon();
+        _towerPriceText.text = tower.getTurretPrice().ToString();
     }
 
     // Implementasi dari Interface IBeginDragHandler
