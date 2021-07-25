@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-
     public bool IsOver { get; private set; }
 
     // Fungsi Singleton
@@ -199,7 +198,7 @@ public class LevelManager : MonoBehaviour
 
         newEnemy.ChoosenPathIndex = Random.Range(0, _enemyPaths.Length);
         newEnemy.transform.position = _enemyPaths[newEnemy.ChoosenPathIndex].Points[0].position;
-        newEnemy.SetTargetPos(_enemyPaths[newEnemy.ChoosenPathIndex][1].position);
+        newEnemy.SetTargetPos(_enemyPaths[newEnemy.ChoosenPathIndex].Points[1].position);
         newEnemy.SetCurrentPointInPath(1);
         newEnemy.gameObject.SetActive(true);
     }
@@ -208,14 +207,14 @@ public class LevelManager : MonoBehaviour
     // tanpa harus di-Play terlebih dahulu
     private void OnDrawGizmos()
     {
-        // foreach (EnemyPath path in _enemyPaths)
-        // {
-        //     for (int i = 0; i < path.Points.Length - 1; i++)
-        //     {
-        //         Gizmos.color = Color.cyan;
-        //         Gizmos.DrawLine(path.Points[i].position, path.Points[i + 1].position);
-        //     }
-        // }
+        foreach (EnemyPath path in _enemyPaths)
+        {
+            for (int i = 0; i < path.Points.Length - 1; i++)
+            {
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(path.Points[i].position, path.Points[i + 1].position);
+            }
+        }
     }
 
     public Bullet GetBulletFromPool(Bullet prefab)

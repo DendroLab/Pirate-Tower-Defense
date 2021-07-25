@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class EnemyPath : MonoBehaviour
 {
-    [SerializeField] internal Transform[] Points { get; set; }
+    [SerializeField] internal Transform[] Points;
 }
